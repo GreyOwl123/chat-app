@@ -33,13 +33,6 @@ const io = new Server(server, {
       allowEIO3: true
 });
 
-io.on('connection', (socket) => {
-    console.log('user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
-
 io.engine.on("connection_error", (err) => {
   console.log(err.req);     // the request object. 
   console.log(err.code);    // error code, i.e 1 which stands for "Transport unknown".

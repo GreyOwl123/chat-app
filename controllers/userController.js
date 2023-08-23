@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const { body, validationResult } = require("express-validator");
+const id = require("uuid")
 const async = require ("async");
 const passport = require("passport");
 const bcryptjs = require("bcryptjs");
@@ -27,7 +28,7 @@ exports.user_signup = [
      return;
    } 
 
-bcryptjs.hash(req.body.password, 10, async (err, hashedPassword) => {
+ bcryptjs.hash(req.body.password, 10, async (err, hashedPassword) => {
   const user = new User({
      username: req.body.username,
      password: hashedPassword,
