@@ -10,7 +10,6 @@ const cors = require("cors");
 const path  = require('path');
 const cookieParser = require("cookie-parser");
 const logger = require('morgan');
-const async = require("async");
 const passport = require("passport");
 const session = require("express-session");
 const LocalStrategy = require("passport-local");
@@ -40,25 +39,25 @@ io.engine.on("connection_error", (err) => {
   console.log(err.context); // additional error context
 })
 
-const mongoose = require("mongoose");
+/*const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const mongoDB = process.env.MONGO_DB_URL;
 
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
-}
+}*/
 
 
 io.engine.use(logger('dev'));
 io.engine.use(express.json());
 io.engine.use(express.urlencoded({ extended: true }));
 io.engine.use(cookieParser());
-io.engine.use(express.static(path.join(__dirname, 'public')));
+io.engine.use(cors());
+io.engine.use('/', express.static(path.join(__dirname, 'public/htmls')));
 io.engine.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 io.engine.use(passport.initialize());
 io.engine.use(passport.authenticate("session"));
-
 
 io.engine.use(function(req, res, next) {
   res.locals.currentUser = req.user;
@@ -67,6 +66,8 @@ io.engine.use(function(req, res, next) {
 
 io.engine.use('/', indexRouter);
 io.engine.use('/users', usersRouter);
+
+app.get('/*', (req, res) => res.sendFile(path.resolve(__dirname, 'public/htmls', 'chat.html')));
 
 // catch 404 and forward to error handler
 io.engine.use(function(req, res, next) {
