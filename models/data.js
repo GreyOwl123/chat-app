@@ -1,8 +1,13 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const mariadb = require('mariadb');
+
 const pool = mariadb.createPool({
-     host: 'mydb.com',
-     user:'myUser',
-     password: 'myPassword',
+     host: DATABASE_HOST,
+     user:DATABASE_USER,
+     password: DATABASE_PASSWORD,
+     name: DATABASE_NAME,
      connectionLimit: 5
 });
 async function asyncFunction() {
